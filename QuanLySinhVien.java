@@ -1,163 +1,67 @@
-package T3H.Buoi7;
+package T3H.Buoi9;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Scanner;
 
+class SinhVien {
+    String maSo;
+    String ten;
+    double diemThi;
+
+    public SinhVien(String maSo, String ten, double diemThi) {
+        this.maSo = maSo;
+        this.ten = ten;
+        this.diemThi = diemThi;
+    }
+
+    @Override
+    public String toString() {
+        return "Mã số: " + maSo + ", Tên: " + ten + ", Điểm thi: " + diemThi;
+    }
+}
+
 public class QuanLySinhVien {
-    private SinhVien[] danhSach;
-    private int soLuongSinhVien;
 
-    public QuanLySinhVien() {
-        danhSach = new SinhVien[10];
-        soLuongSinhVien = 0;
-    }
+    private static ArrayList<SinhVien> danhSachSinhVien = new ArrayList<>();
+    private static HashSet<String> maSoSinhVienSet = new HashSet<>();
 
-    public void themSinhVien() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Nhập tên sinh viên:");
-        String ten = scanner.nextLine();
-        System.out.println("Nhập tuổi sinh viên:");
-        int tuoi = scanner.nextInt();
-        scanner.nextLine();
-        System.out.println("Nhập mã sinh viên:");
-        String maSinhVien = scanner.nextLine();
-
-        for (int i = 0; i < soLuongSinhVien; i++) {
-            if (danhSach[i].getMaSinhVien().equals(maSinhVien)) {
-                System.out.println("Mã sinh viên đã tồn tại, không thể thêm sinh viên.");
-                return;
-            }
-        }
-
-        if (soLuongSinhVien == danhSach.length) {
-            moRongMang();
-        }
-
-        danhSach[soLuongSinhVien] = new SinhVien(ten, tuoi, maSinhVien);
-        soLuongSinhVien++;
-        System.out.println("Sinh viên đã được thêm vào danh sách.");
-    }
-
-    public void suaSinhVien() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Nhập mã sinh viên cần chỉnh sửa:");
-        String maSinhVien = scanner.nextLine();
-
-        boolean timThay = false;
-        for (int i = 0; i < soLuongSinhVien; i++) {
-            if (danhSach[i].getMaSinhVien().equals(maSinhVien)) {
-                timThay = true;
-                System.out.println("Thông tin sinh viên hiện tại: " + danhSach[i]);
-                System.out.println("Nhập tên sinh viên chỉnh sửa:");
-                String tenMoi = scanner.nextLine();
-                System.out.println("Nhập tuổi sinh viên chỉnh sửa:");
-                int tuoiMoi = scanner.nextInt();
-                scanner.nextLine();
-                System.out.println("Nhập mã sinh viên chỉnh sửa:");
-                String maSinhVienMoi = scanner.nextLine();
-
-                danhSach[i].setTen(tenMoi);
-                danhSach[i].setTuoi(tuoiMoi);
-                danhSach[i].setMaSinhVien(maSinhVienMoi);
-                System.out.println("Thông tin sinh viên đã được cập nhật.");
-                return;
-            }
-        }
-
-        if (!timThay) {
-            System.out.println("Không tìm thấy sinh viên với mã sinh viên này.");
-        }
-    }
-
-    public void xoaSinhVien() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Nhập mã sinh viên cần xóa:");
-        String maSinhVien = scanner.nextLine();
-
-        boolean timThay = false;
-        for (int i = 0; i < soLuongSinhVien; i++) {
-            if (danhSach[i].getMaSinhVien().equals(maSinhVien)) {
-                timThay = true;
-                for (int j = i; j < soLuongSinhVien - 1; j++) {
-                    danhSach[j] = danhSach[j + 1];
-                }
-                soLuongSinhVien--;
-                System.out.println("Sinh viên đã được xóa khỏi danh sách.");
-                return;
-            }
-        }
-
-        if (!timThay) {
-            System.out.println("Không tìm thấy sinh viên với mã sinh viên này.");
-        }
-    }
-
-    public void timKiemTheoTen() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Nhập tên sinh viên cần tìm:");
-        String ten = scanner.nextLine();
-
-        boolean timThay = false;
-        for (int i = 0; i < soLuongSinhVien; i++) {
-            if (danhSach[i].getTen().equals(ten)) {
-                timThay = true;
-                System.out.println("Kết quả tìm kiếm: " + danhSach[i]);
-            }
-        }
-
-        if (!timThay) {
-            System.out.println("Không tìm thấy sinh viên nào có tên " + ten + ".");
-        }
-    }
-
-    public void hienThiDanhSach() {
-        if (soLuongSinhVien == 0) {
-            System.out.println("Danh sách sinh viên hiện đang trống.");
-        } else {
-            System.out.println("Danh sách sinh viên hiện tại:");
-            for (int i = 0; i < soLuongSinhVien; i++) {
-                System.out.println(danhSach[i]);
-            }
-        }
-    }
-
-    public void moRongMang() {
-        SinhVien[] danhSachMoi = new SinhVien[danhSach.length * 2];
-        System.arraycopy(danhSach, 0, danhSachMoi, 0, danhSach.length);
-        danhSach = danhSachMoi;
-    }
-
-    public void hienThiMenu() {
+    public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         while (true) {
-            System.out.println("Menu Quản Lý Danh Sách Sinh Viên");
-            System.out.println("1. Thêm sinh viên vào danh sách.");
-            System.out.println("2. Sửa thông tin sinh viên.");
-            System.out.println("3. Xóa sinh viên khỏi danh sách.");
-            System.out.println("4. Tìm kiếm sinh viên theo tên.");
-            System.out.println("5. Hiển thị danh sách sinh viên.");
-            System.out.println("6. Thoát.");
-            System.out.print("Chọn chức năng: ");
-            int luaChon = scanner.nextInt();
-            scanner.nextLine();  // Clear the buffer
+            System.out.println("Chọn chức năng:");
+            System.out.println("1. Thêm sinh viên");
+            System.out.println("2. Xóa sinh viên");
+            System.out.println("3. Hiển thị danh sách sinh viên");
+            System.out.println("4. Tìm kiếm sinh viên theo tên");
+            System.out.println("5. Sắp xếp sinh viên theo điểm thi");
+            System.out.println("6. Kiểm tra sinh viên có tồn tại");
+            System.out.println("0. Thoát");
+            int chucNang = scanner.nextInt();
+            scanner.nextLine(); // Consume newline character
 
-            switch (luaChon) {
+            switch (chucNang) {
                 case 1:
-                    themSinhVien();
+                    themSinhVien(scanner);
                     break;
                 case 2:
-                    suaSinhVien();
+                    xoaSinhVien(scanner);
                     break;
                 case 3:
-                    xoaSinhVien();
-                    break;
-                case 4:
-                    timKiemTheoTen();
-                    break;
-                case 5:
                     hienThiDanhSach();
                     break;
+                case 4:
+                    timKiemSinhVien(scanner);
+                    break;
+                case 5:
+                    sapXepSinhVien();
+                    break;
                 case 6:
-                    System.out.println("Đã thoát khỏi chương trình.");
+                    kiemTraSinhVien(scanner);
+                    break;
+                case 0:
+                    System.out.println("Thoát khỏi chương trình.");
                     return;
                 default:
                     System.out.println("Chức năng không hợp lệ.");
@@ -165,9 +69,100 @@ public class QuanLySinhVien {
         }
     }
 
-    public static void main(String[] args) {
-        QuanLySinhVien qlSinhVien = new QuanLySinhVien();
-        qlSinhVien.hienThiMenu();
+    public static void themSinhVien(Scanner scanner) {
+        System.out.print("Nhập mã số sinh viên: ");
+        String maSo = scanner.nextLine();
+        System.out.print("Nhập tên sinh viên: ");
+        String ten = scanner.nextLine();
+        System.out.print("Nhập điểm thi: ");
+        double diemThi = scanner.nextDouble();
+
+        try {
+            if (maSoSinhVienSet.contains(maSo)) {
+                throw new Exception("Sinh viên với mã số " + maSo + " đã tồn tại.");
+            }
+            SinhVien sinhVienMoi = new SinhVien(maSo, ten, diemThi);
+            danhSachSinhVien.add(sinhVienMoi);
+            maSoSinhVienSet.add(maSo);
+            System.out.println("Thêm sinh viên thành công.");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static void xoaSinhVien(Scanner scanner) {
+        System.out.print("Nhập mã số sinh viên cần xóa: ");
+        String maSo = scanner.nextLine();
+
+        try {
+            boolean timThay = false;
+            for (SinhVien sv : danhSachSinhVien) {
+                if (sv.maSo.equals(maSo)) {
+                    danhSachSinhVien.remove(sv);
+                    maSoSinhVienSet.remove(maSo);
+                    timThay = true;
+                    break;
+                }
+            }
+            if (!timThay) {
+                throw new Exception("Sinh viên với mã số " + maSo + " không tồn tại.");
+            }
+            System.out.println("Xóa sinh viên thành công.");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static void hienThiDanhSach() {
+        if (danhSachSinhVien.isEmpty()) {
+            System.out.println("Danh sách sinh viên trống.");
+        } else {
+            for (SinhVien sv : danhSachSinhVien) {
+                System.out.println(sv);
+            }
+        }
+    }
+
+    public static void timKiemSinhVien(Scanner scanner) {
+        System.out.print("Nhập tên sinh viên cần tìm: ");
+        String ten = scanner.nextLine();
+
+        try {
+            boolean timThay = false;
+            for (SinhVien sv : danhSachSinhVien) {
+                if (sv.ten.equalsIgnoreCase(ten)) {
+                    System.out.println(sv);
+                    timThay = true;
+                }
+            }
+            if (!timThay) {
+                throw new Exception("Không tìm thấy sinh viên với tên " + ten + ".");
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static void sapXepSinhVien() {
+        try {
+            if (danhSachSinhVien.isEmpty()) {
+                throw new Exception("Danh sách sinh viên trống, không thể sắp xếp.");
+            }
+            Collections.sort(danhSachSinhVien, (sv1, sv2) -> Double.compare(sv1.diemThi, sv2.diemThi));
+            System.out.println("Danh sách sinh viên đã được sắp xếp theo điểm thi.");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static void kiemTraSinhVien(Scanner scanner) {
+        System.out.print("Nhập mã số sinh viên cần kiểm tra: ");
+        String maSo = scanner.nextLine();
+
+        if (maSoSinhVienSet.contains(maSo)) {
+            System.out.println("Sinh viên với mã số " + maSo + " tồn tại.");
+        } else {
+            System.out.println("Sinh viên với mã số " + maSo + " không tồn tại.");
+        }
     }
 }
-
